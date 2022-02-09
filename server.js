@@ -3,7 +3,7 @@ var express = require("express")
 var cors = require("cors")
 var app = express();
 var corsOption = {
-    origin: "http://localhost:8081"
+    origin: "https://trungluongw-app.herokuapp.com/"
 }
 app.use(cors(corsOption))
 app.use(express.urlencoded({ extended: true }));
@@ -14,7 +14,7 @@ initPlayerRouter(app)
 // })
 // handle 404
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`server is running on port : ${PORT}`)
 })
