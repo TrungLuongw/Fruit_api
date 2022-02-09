@@ -2,6 +2,7 @@ const Player = require("../models/player.model.js")
 
 
 let getAll = (req, res) => {
+    console.log('get all data player')
     Player.getAll((Data, err) => {
         if (err) {
             return res.status(400).send({
