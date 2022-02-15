@@ -1,42 +1,81 @@
-const Player = require("../models/player.model.js")
+const { response } = require('express')
+const Player = require('../models/player.model')
 
-
-let getAll = (req, res) => {
-    console.log('get all data player')
-    Player.getAll((Data, err) => {
-        if (err) {
-            return res.status(400).send({
-                message: err,
-                data: []
-            })
-        }
-        else {
-            return res.status(200).json({
-                message: 'ok',
-                data: Data
-            })
-        }
-    })
-}
-let update = (req, res) => {
-    let { name, point } = req.body;
-    console.log(req.body)
-    Player.updatePlayer(name, point, (result) => {
-        if (result === true) {
-            return res.status(400).send({
-                message: 'FAIL',
-                data: []
-            })
-        }
-        return res.status(200).send({
-            message: result,
-            data: []
+const index = (req, res, next) => {
+    Player.find().then(response => {
+        res.json({
+            response
         })
 
+    }).catch(error => {
+        res.json({
+            message: 'An error occured!'
+        })
     })
-
-
 }
+
+const show = (req, res, next) => {
+    let playerID = req.body.playerID
+    Player.findById(playerID)
+        .then(
+            response => {
+                res.json({
+                    response
+                })
+            }
+        )
+        .catch(error => {
+            res.json({
+                message: 'an error occured!'
+            })
+        })
+}
+
+//add new player 
+const store = (req, res, next) => {
+    let player = new Player({
+        name: req.body.name,
+        point: req.body.point
+    })
+    player.save()
+        .then(response => {
+            res.json({
+                message: 'Player added successfully !'
+            })
+        }).catch(error => {
+            res.json({
+                message: 'an error occured !'
+            })
+        })
+}
+
+const update = (req, res, next) => {
+    let playerID = req.body.playerID
+
+    let updateData = {
+        name: req.body.name,
+        point: req.body.point
+    }
+
+    Player.findByIdAndUpdate(playerID, { $set: updateData })
+        .then(() => {
+            res.json({
+                message: 'update new point successfully !'
+            })
+        })
+        .catch(error => {
+            res.json({
+                message: 'an error occured!(update)'
+            })
+        })
+}
+
+//delete 
+
+
+
 module.exports = {
-    getAll, update
+    index, show, store, update
 }
+
+

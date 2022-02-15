@@ -1,12 +1,13 @@
 
 let router = require("express").Router();
-const playerController = require('../controllers/player.controller')
-const initPlayerRouter = (app) => {
-    console.log('da vao duoc router')
-    router.get('/', playerController.getAll)
-    router.put('/update', playerController.update)
-    app.use('/api/dataPlayer', router)
-}
-module.exports = initPlayerRouter
+const { route } = require("express/lib/application");
+const PlayerController = require('../controllers/player.controller')
+
+router.get('/', PlayerController.index)
+router.post('/show', PlayerController.show)
+router.post('/update', PlayerController.update)
+router.post('/store', PlayerController.store)
+
+module.exports = router
 
 
