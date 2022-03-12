@@ -3,20 +3,19 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const configViewEngine = require('./app/config/viewEngine')
-const PlayerRouter = require('./app/routers/player.routers')
-const Game = require('./app/routers/game.routers')
+const PlayerRouter = require('./app/example/routers/player.routers')
+const db = require('./app/config/db.config')
+db.connect();
+// await mongoose.connect('mongodb+srv://user01:pass01@cluster0.mcvsh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+// const db = mongoose.connection
 
+// db.on('error', (err) => {
+//     console.log(err)
+// })
+// db.once('open', () => {
+//     console.log('database coonnection established!')
 
-await mongoose.connect('mongodb+srv://user01:pass01@cluster0.mcvsh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
-const db = mongoose.connection
-
-db.on('error', (err) => {
-    console.log(err)
-})
-db.once('open', () => {
-    console.log('database coonnection established!')
-
-})
+// })
 
 const app = express()
 app.use(morgan('dev'))
@@ -31,4 +30,3 @@ app.listen(PORT, () => {
 configViewEngine(app)
 
 app.use('/api/player', PlayerRouter)
-app.use('/', Game)
