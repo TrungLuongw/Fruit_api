@@ -1,4 +1,4 @@
-const { response } = require('express')
+
 const Player = require('../models/player.model')
 
 const index = (req, res, next) => {
@@ -15,20 +15,11 @@ const index = (req, res, next) => {
 }
 
 const show = (req, res, next) => {
-    let playerID = req.body.playerID
-    Player.findById(playerID)
-        .then(
-            response => {
-                res.json({
-                    response
-                })
-            }
-        )
-        .catch(error => {
-            res.json({
-                message: 'an error occured!'
-            })
-        })
+
+
+    console.log(req.body)
+
+
 }
 
 //add new player 

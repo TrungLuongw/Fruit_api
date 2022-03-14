@@ -1,6 +1,5 @@
 
 let router = require("express").Router();
-const { route } = require("express/lib/application");
 const PlayerController = require('../controllers/player.controller')
 
 router.get('/', PlayerController.index)
