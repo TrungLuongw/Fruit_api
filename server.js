@@ -2,12 +2,14 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const LogRouter = require('./app/Log/log.router');
 const fruitRouter = require('./app/Fruits/fruit.router')
-
-//session
-
+const accountRouter = require("./app/Account/account.router")
+var session = require('express-session')
+var cookieParser = require('cookie-parser')
 const db = require('./app/config/db.config')
 db.connect();
+
 
 //access control allow another domain
 const app = express()
@@ -16,7 +18,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 
-
+session = require('express-session');
+app.use(session({
+    secret: '2C44-4D44-WppQ38S',
+    resave: true,
+    saveUninitialized: true
+}));
 const corsOption = {
     "origin": "*",
     "methods": "GET,PUT,POST,DELETE",
@@ -25,13 +32,26 @@ const corsOption = {
 }
 app.use(cors(corsOption))
 
-
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
     console.log('server is running on port :' + PORT)
 })
-//configViewEngine(app)
+const auth = function (req, res, next) {
+    if (req.session.role == "admin") {
+        next()
+    } else {
+        res.status(500).json({ message: "server error" })
+    }
+}
+app.use('/login', LogRouter);
+// Logout endpoint
+app.get('/logout', function (req, res) {
+    req.session.destroy();
+    res.send("logout success!");
+});
 
-//app.use('/api/player', PlayerRouter)
-app.use('/api/product', fruitRouter)
+
+app.use('/api/product', auth, fruitRouter)
+
+app.use("/api/account", accountRouter)
