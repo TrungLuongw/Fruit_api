@@ -1,6 +1,6 @@
 const fruitModel = require('../Fruits/fruit.model')
 const Bill = require('./bill.model')
-
+const fruit = require('../Fruits/fruit.model')
 const getAll = (req, res, next) => {
     Bill.find({ status: 1 }).then(response => {
         res.status(200).json({
@@ -63,7 +63,6 @@ const updateItems = async (req, res, next) => {
 
     Bill.findOneAndUpdate(id, {
         $set: {
-            status: 1,
             idFruits: arrID,
             weights: arrWeight,
             totalPrice: price
