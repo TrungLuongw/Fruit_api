@@ -1,10 +1,11 @@
 
-const { response } = require('express')
-const { Double } = require('mongodb')
-const { now } = require('mongoose')
 const fruitModel = require('./fruit.model')
+const path = require('path')
+//-------------
 
+//get all
 const getAll = (req, res, next) => {
+    console.log('get all')
     fruitModel.find().then(response => {
         res.status(200).json({
             response
@@ -15,17 +16,74 @@ const getAll = (req, res, next) => {
         })
     })
 }
+
+//delete by id
+const deleteFruit = async (req, res, next) => {
+
+    try {
+        let ID = req.params.id
+        const rs = await fruitModel.findOneAndRemove({ _id: ID });
+        if (!rs) return res.status(403).json({ msg: 'Cant access to delete...' })
+
+        return res.json({ msg: 'Deleted fruit successfully!' })
+    }
+    catch (err) {
+        res.status(500).json({ msg: 'Internal server error...' })
+    }
+
+}
+//edit price
+
+const editPrice = async (req, res, next) => {
+    try {
+        let ID = req.params.id
+        const rs = await fruitModel.findByIdAndUpdate({ _id: ID }, {
+            $set: {
+                price: req.body.newPrice
+            }
+        });
+        if (!rs) return res.status(403).json({ msg: 'Cant access to delete...' })
+
+        return res.json({ msg: 'Edit price fruit successfully!' })
+    }
+    catch (err) {
+        res.status(500).json({ msg: 'Internal server error...' })
+    }
+
+}
+//add quantity
+const incrRemain = (req, res, next) => {
+    let name = req.params.name
+    fruitModel.findOneAndUpdate({ name }, {
+        $inc: {
+            remain: Number(req.body.quantity),
+
+        }
+    }, { new: true }).then(response => {
+        res.status(200).json({
+            msg: 'Add quantity successfully!'
+        })
+    }).catch(error => {
+        console.log(error)
+        res.status(500).json({ msg: 'Internal server error...' })
+    })
+
+}
+
+
+
 // Thêm mẫu mới 
 const storage = (req, res, next) => {
+    console.log('storage fruit')
+
     let fruit = new fruitModel({
         name: req.body.name,
         season: req.body.season,
         country: req.body.country,
         price: Number(req.body.price),
-        unit: req.body.unit,
         remain: Number(req.body.remain),
         sold: Number(req.body.sold),
-        url: req.body.url,
+        avatar: req.body.avatar,
         description: req.body.description,
 
     })
@@ -69,33 +127,15 @@ const edit = async (req, res, next) => {
     })
 
 }
-//tăng số lượng remain (remain = old + new)
-const incrRemain = (req, res, next) => {
-    let ID = req.params.id
-    fruitModel.findOneAndUpdate({ _id: ID }, {
-        $inc: {
-            remain: Number(req.body.remain),
 
-        }, $set: {
-            updateAt: new Date
-        }
-    }, { new: true }).then(response => {
-        res.status(200).json({
-            response
-        })
-    }).catch(error => {
-        console.log(error)
-        res.status(400).json({
-            message: "add to remain fail !"
-        })
-    })
-
-}
 const getOne = (req, res, next) => {
     let ID = req.params.id
+    console.log('get one' + ID)
+
+
     fruitModel.findOne({ _id: ID }).then(response => {
         res.status(200).json({
-            response
+            response,
         })
     }).catch(error => {
         res.status(404).json({
@@ -104,4 +144,10 @@ const getOne = (req, res, next) => {
     })
 }
 
-module.exports = { getAll, storage, edit, incrRemain, getOne }
+
+
+
+module.exports = {
+    getAll, storage, edit, incrRemain, getOne, deleteFruit
+    , editPrice
+}

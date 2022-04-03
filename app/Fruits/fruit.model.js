@@ -1,3 +1,4 @@
+const { Timestamp } = require('mongodb')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const ObjectId = Schema.ObjectId
@@ -8,12 +9,16 @@ const Fruit = new Schema({
     season: { type: String, maxlength: 200 },
     country: { type: String, maxlength: 200 },
     price: { type: Number },
-    unit: { type: String, default: 'VND' },
+    unit: { type: String, default: 'KG' },
+    currencyunit: { type: String, default: 'VND' },
     remain: { type: Number },
     sold: { type: Number },
-    url: { type: String },
+    avatar: { type: String },
     description: { type: String, maxlength: 1000 },
-    createAt: { type: Date, default: Date.now },
-    updateAt: { type: Date, default: Date.now }
-})
+
+}
+    ,
+    { timestamps: true }
+)
+
 module.exports = mongoose.model('Fruits', Fruit)

@@ -7,7 +7,8 @@ const fruitRouter = require('./app/Fruits/fruit.router')
 const accountRouter = require("./app/Account/account.router")
 var session = require('express-session')
 var cookieParser = require('cookie-parser')
-const db = require('./app/config/db.config')
+const db = require('./app/config/db.config');
+const { cookie } = require('express/lib/response');
 db.connect();
 
 
@@ -22,7 +23,10 @@ session = require('express-session');
 app.use(session({
     secret: '2C44-4D44-WppQ38S',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 60000 * 30
+    }
 }));
 const corsOption = {
     "origin": "*",
@@ -31,8 +35,8 @@ const corsOption = {
     "optionsSuccessStatus": 204
 }
 app.use(cors(corsOption))
-
-const PORT = process.env.PORT || 3000
+app.use('/images', express.static('static/images'))
+const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
     console.log('server is running on port :' + PORT)
@@ -52,6 +56,6 @@ app.get('/logout', function (req, res) {
 });
 
 
-app.use('/api/product', auth, fruitRouter)
+app.use('/api/fruit', fruitRouter)
 
 app.use("/api/account", accountRouter)
