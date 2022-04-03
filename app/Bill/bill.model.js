@@ -4,25 +4,24 @@ const ObjectId = Schema.ObjectId
 
 const Bill = new Schema({
     id: ObjectId,
-    fruits: [{
+    Fruits: [{
         idFruit: {
             type: mongoose.ObjectId,
-            ref: 'fruits'
+            ref: 'Fruits'
         },
         weight: {
             type: Number
         }
     }],
-    totalPrice: { type: Number },
     status: { type: Number, default: 0 },
+    totalPrice: { type: Number },
     user: {
         type: mongoose.ObjectId,
         ref: 'accounts'
     },
-
 }
     ,
     { timestamps: true }
 )
 
-module.exports = mongoose.model('bill', Bill)
+module.exports = mongoose.model('bills', Bill)

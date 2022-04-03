@@ -2,8 +2,8 @@
 const { json } = require('express/lib/response');
 const accountmodel = require("./account.model")
 
-const getAll = (req, res, next) => {
-    accountmodel.find({})
+const getAll = async (req, res, next) => {
+    await accountmodel.find({})
         .then(data => {
             if (data) {
                 res.status(200).json(data)
@@ -19,12 +19,12 @@ const getAll = (req, res, next) => {
             })
         })
 }
-const add = (req, res, next) => {
+const add = async (req, res, next) => {
     var username = req.body.username;
     var password = req.body.password;
     var role = req.body.role;
 
-    accountmodel.findOne({
+    await accountmodel.findOne({
         username: username
     })
         .then(data => {
@@ -44,9 +44,9 @@ const add = (req, res, next) => {
             json.status(500).json({ message: "server error" })
         })
 }
-const getById = (req, res, next) => {
+const getById = async (req, res, next) => {
     var id = req.params.id;
-    accountmodel.findById(id)
+    await accountmodel.findById(id)
         .then(data => {
             if (data) {
                 res.json(data);
@@ -62,11 +62,11 @@ const getById = (req, res, next) => {
             })
         })
 }
-const update = (req, res, next) => {
+const update = async (req, res, next) => {
     var id = req.params.id;
     var password = req.body.password;
     var role = req.body.role;
-    accountmodel.findByIdAndUpdate(id, {
+    await accountmodel.findByIdAndUpdate(id, {
         password: password,
         role: role
     })
@@ -77,9 +77,9 @@ const update = (req, res, next) => {
             res.status(500).json({ message: "server error" })
         })
 }
-const Delete = (req, res, next) => {
+const Delete = async (req, res, next) => {
     var id = req.params.id;
-    accountmodel.deleteOne({ _id: id })
+    await accountmodel.deleteOne({ _id: id })
         .then(data => {
             res.json({ message: "delete account sucessfully" })
         })
