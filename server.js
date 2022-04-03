@@ -5,6 +5,7 @@ const cors = require('cors')
 const LogRouter = require('./app/Log/log.router');
 const fruitRouter = require('./app/Fruits/fruit.router')
 const accountRouter = require("./app/Account/account.router")
+const billRouter = require("./app/Bill/bill.router")
 var session = require('express-session')
 var cookieParser = require('cookie-parser')
 const db = require('./app/config/db.config')
@@ -55,3 +56,5 @@ app.get('/logout', function (req, res) {
 app.use('/api/product', auth, fruitRouter)
 
 app.use("/api/account", accountRouter)
+
+app.use("/api/bill", billRouter)

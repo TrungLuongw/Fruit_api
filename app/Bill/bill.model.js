@@ -4,11 +4,24 @@ const ObjectId = Schema.ObjectId
 
 const Bill = new Schema({
     id: ObjectId,
-    idFruits: [mongoose.type.ObjectId],
-    weights: [Number],
+    Fruits: [{
+        idFruit: {
+            type: mongoose.ObjectId,
+            ref: 'Fruits'
+        },
+        weight: {
+            type: Number
+        }
+    }],
+    status: { type: Number, default: 0 },
     totalPrice: { type: Number },
-    idDevice: { type: Number, default: 111 },
-    createAt: { type: Date, default: Date.now },
-    updateAt: { type: Date, default: Date.now }
-})
-module.exports = mongoose.model('bill', Bill)
+    user: {
+        type: mongoose.ObjectId,
+        ref: 'accounts'
+    },
+}
+    ,
+    { timestamps: true }
+)
+
+module.exports = mongoose.model('bills', Bill)
