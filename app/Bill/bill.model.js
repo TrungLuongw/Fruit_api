@@ -15,10 +15,7 @@ const Bill = new Schema({
     }],
     status: { type: Number, default: 0 },
     totalPrice: { type: Number },
-    user: {
-        type: mongoose.ObjectId,
-        ref: 'accounts'
-    },
+    code: { type: Number }
 }
     ,
     { timestamps: true }
