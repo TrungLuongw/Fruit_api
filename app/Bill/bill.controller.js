@@ -50,9 +50,7 @@ const add = async (req, res, next) => {
                 idFruits: req.body.idFruits,
                 weight: req.body.weight,
             }]
-        }, {
-        user: req.body.iduser
-    })
+        })
     bill.save();
     res.status(200).json({
         message: "add bill thanh cong"

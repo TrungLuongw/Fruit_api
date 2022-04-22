@@ -16,9 +16,6 @@ const Bill = new Schema({
     status: { type: Number, default: 0 },
     totalPrice: { type: Number },
     code: { type: Number }
-}
-    ,
-    { timestamps: true }
-)
+})
 
 module.exports = mongoose.model('bills', Bill)
