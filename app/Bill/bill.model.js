@@ -19,5 +19,6 @@ const Bill = new Schema({
     totalPrice: { type: Number },
     code: { type: Number }
 })
+Bill.plugin(autoIncrement.plugin, 'code');
 
 module.exports = mongoose.model('bills', Bill)
