@@ -21,6 +21,7 @@ const findById = async (req, res, next) => {
             }
         })
         .catch(err => {
+            console.log(err)
             res.status(500).json({
                 message: "server error"
             })
@@ -44,7 +45,14 @@ const getTotalById = async (req, res, next) => {
             })
         })
 }
+const update = async (req, res, next) => {
+    await billmodel.findByIdAndUpdate(req.params.id, {
+        $inc: {
 
+        }
+    })
+
+}
 
 
 module.exports = { findById, getTotalById }

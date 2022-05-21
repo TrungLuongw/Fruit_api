@@ -6,8 +6,8 @@ const fruitController = require('./fruit.controller')
 
 
 router.get('/getAll', fruitController.getAll)
-router.post('/delete/:id', fruitController.deleteFruit)
-router.post('/editPrice/:id', fruitController.editPrice)
+router.post('/delete/:name', fruitController.deleteFruit)
+router.post('/editPrice/:name', fruitController.editPrice)
 router.post('/addQuantity/:name', fruitController.incrRemain)
 
 

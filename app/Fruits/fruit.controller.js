@@ -21,8 +21,8 @@ const getAll = (req, res, next) => {
 const deleteFruit = async (req, res, next) => {
 
     try {
-        let ID = req.params.id
-        const rs = await fruitModel.findOneAndRemove({ _id: ID });
+        let name = req.params.name
+        const rs = await fruitModel.findOneAndRemove({ name });
         if (!rs) return res.status(403).json({ msg: 'Cant access to delete...' })
 
         return res.json({ msg: 'Deleted fruit successfully!' })
@@ -36,8 +36,8 @@ const deleteFruit = async (req, res, next) => {
 
 const editPrice = async (req, res, next) => {
     try {
-        let ID = req.params.id
-        const rs = await fruitModel.findByIdAndUpdate({ _id: ID }, {
+        let name = req.params.name
+        const rs = await fruitModel.findByIdAndUpdate({ name }, {
             $set: {
                 price: req.body.newPrice
             }

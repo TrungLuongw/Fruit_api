@@ -7,5 +7,3 @@ router.get("/gettotal/:id", billcontroller.getTotalById)
 router.post("/updatebillfruits/:id")
 
 module.exports = router
-
-
