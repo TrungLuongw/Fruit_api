@@ -1,31 +1,26 @@
 const { data } = require("jquery")
 const billmodel = require("../Bill/bill.model")
+const Fruit = require('../Fruits/fruit.model')
 
+const findByCode = async (req, res, next) => {
 
-const findById = async (req, res, next) => {
-
-    var id = req.params.id
-    await billmodel.find({ _id: id }).populate("user", "username").populate({
-        'path': 'Fruits',
-        'populate': {
-            'path': 'idFruit'
-        }
-    })
-        .then(data => {
-            if (data) {
-                res.json(data)
-            } else {
-                res.status(404).json({
-                    message: "bill not found"
-                })
-            }
-        })
-        .catch(err => {
-            console.log(err)
-            res.status(500).json({
-                message: "server error"
+    try {
+        var code = req.params.code
+        var rs = await billmodel.findOne({ code }).populate('LisFruits.idfruit')
+        console.log(rs.LisFruits)
+        if (rs) {
+            res.json(rs);
+        } else {
+            res.status(404).json({
+                message: "bill not found"
             })
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "server error"
         })
+    }
 }
 
 const getTotalById = async (req, res, next) => {
@@ -55,4 +50,4 @@ const update = async (req, res, next) => {
 }
 
 
-module.exports = { findById, getTotalById }
+module.exports = { findByCode, getTotalById }

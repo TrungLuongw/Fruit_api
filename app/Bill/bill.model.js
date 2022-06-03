@@ -1,11 +1,12 @@
+const { Timestamp } = require('mongodb')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const ObjectId = Schema.ObjectId
 
 const Bill = new Schema({
     id: ObjectId,
-    Fruits: [{
-        idFruit: {
+    LisFruits: [{
+        idfruit: {
             type: mongoose.ObjectId,
             ref: 'Fruits'
         },
@@ -15,13 +16,9 @@ const Bill = new Schema({
     }],
     status: { type: Number, default: 0 },
     totalPrice: { type: Number },
-    user: {
-        type: mongoose.ObjectId,
-        ref: 'accounts'
-    },
+    createAt:{type:Date,default:Date.now},
+    code:{type:Number}
 }
-    ,
-    { timestamps: true }
 )
 
 module.exports = mongoose.model('bills', Bill)
